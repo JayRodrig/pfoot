@@ -8,15 +8,22 @@ import PredictionModal from '../PredictionModal';
 
 import { SUPPORTED_LEAGUES } from '../../constants';
 
-// const PredictionButton = ({ leagues }) => {
-//   return(
-
-//   )
-// }
+const PredictionButton = ({ league, styles }) => {
+  const formattedLeagueName = league.split('_').join(' ');
+  return(
+    <Button
+      title={formattedLeagueName}
+      containerStyle={styles}
+    />
+  );
+};
 
 const Home = () => {
   const [predictions, setPredictions] = useState(undefined);
   const [visible, setVisible] = useState(false);
+
+  const supportedLeagues = Object.keys(SUPPORTED_LEAGUES);
+
   const toggleOverlay = () => {
     setVisible(!visible);
   };
@@ -39,6 +46,17 @@ const Home = () => {
           onPress={toggleOverlay}
         /> */}
         {/* <PredictionModal onBackDropPress={toggleOverlay} visible={visible} /> */}
+        <View style={styles.predictionButtonContainer}>
+          {
+            supportedLeagues.map((league, index) => (
+              <PredictionButton
+                key={index}
+                league={league}
+                styles={styles.predictionButton}
+              />
+            ))
+          }
+        </View>
       </View>
   );
 };
@@ -55,8 +73,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     width: '100%',
     height: '10vh',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    borderColor: 'red',
+    borderWidth: 1,
   },
+
+  predictionButton: {
+    marginHorizontal: 25,
+    marginVertical: 10
+  },
+
+  predictionButtonContainer: {
+    borderColor: 'red',
+    borderWidth: 1,
+  }
 });
 
 export default Home;

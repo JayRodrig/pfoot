@@ -35,7 +35,7 @@ import ReactNativeElementsStyles from './ReactNativeElementsStyles';
   *
   * PredictionOverlay state:
   * {
-  *   selections: {
+  *   predictions: {
   *     [league_id]: [teamSelected],
   *     [league_id]: [teamSelected]
   *   }
