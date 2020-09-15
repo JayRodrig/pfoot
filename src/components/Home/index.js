@@ -8,17 +8,19 @@ import PredictionModal from '../PredictionModal';
 
 import { SUPPORTED_LEAGUES } from '../../constants';
 
-const PredictionButton = ({ league, styles }) => {
-  const formattedLeagueName = league.split('_').join(' ');
+const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
+  const formattedLeagueName = leagueName.split('_').join(' ');
   return(
     <Button
       title={formattedLeagueName}
       containerStyle={styles}
+      onPress={onPress({ leagueID, leagueName })}
     />
   );
 };
 
 const Home = () => {
+  const [league, setLeague] = useState(undefined);
   const [predictions, setPredictions] = useState(undefined);
   const [visible, setVisible] = useState(false);
 
@@ -27,6 +29,11 @@ const Home = () => {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
+  const handlePredictionButtonPress = (league) => () => {
+    setLeague(league);
+    toggleOverlay();
+  }
 
   return(
     <View style={styles.bodyContainer}>
@@ -45,18 +52,20 @@ const Home = () => {
           title="Start predicting"
           onPress={toggleOverlay}
         /> */}
-        {/* <PredictionModal onBackDropPress={toggleOverlay} visible={visible} /> */}
         <View style={styles.predictionButtonContainer}>
           {
-            supportedLeagues.map((league, index) => (
+            supportedLeagues.map((leagueName, index) => (
               <PredictionButton
                 key={index}
-                league={league}
+                leagueID={SUPPORTED_LEAGUES[leagueName]}
+                leagueName={leagueName}
+                onPress={handlePredictionButtonPress}
                 styles={styles.predictionButton}
               />
             ))
           }
         </View>
+        <PredictionModal league={league} onBackDropPress={toggleOverlay} visible={visible} />
       </View>
   );
 };

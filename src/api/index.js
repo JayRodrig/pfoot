@@ -1,7 +1,7 @@
 export default {
-  getTeamsByLeagueId: async (leagueId) => {
+  getTeamsByLeagueId: async (leagueID) => {
     try {
-      const teamsCall = await fetch("https://api-football-v1.p.rapidapi.com/v2/teams/league/2790", {
+      const teamsCall = await fetch(`https://api-football-v1.p.rapidapi.com/v2/teams/league/${leagueID}`, {
         "method": "GET",
         "headers": {
           "x-rapidapi-host": "api-football-v1.p.rapidapi.com",

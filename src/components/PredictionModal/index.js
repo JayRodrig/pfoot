@@ -9,20 +9,21 @@ import TeamCell from '../TeamCell';
 import apiClient from '../../api';
 import { SUPPORTED_LEAGUES } from '../../constants';
 
-const PredictionModal = ({ onBackDropPress, visible }) => {
+const PredictionModal = ({ league, onBackDropPress, visible }) => {
   const [teams, setTeams] = useState([]);
-  const [league, setLeague] = useState(undefined);
+  const { leagueID, leagueName } = league || {};
 
 
   useEffect(() => {
-    const fetchData = async () => {
-      const teamsByLeague = await apiClient.getTeamsByLeagueId(2790);
-      setLeague(2790);
-      setTeams(teamsByLeague);
-    };
+    if (league) {
+      const fetchData = async () => {
+        const teamsByLeague = await apiClient.getTeamsByLeagueId(leagueID);
+        setTeams(teamsByLeague);
+      };
 
-    fetchData();
-  }, []);
+      fetchData();
+    }
+  }, [league, leagueID]);
 
   return(
     <Overlay isVisible={visible} ModalComponent={Modal} onBackdropPress={onBackDropPress} overlayStyle={{ padding: 0 }}>
@@ -30,7 +31,7 @@ const PredictionModal = ({ onBackDropPress, visible }) => {
 
         {/* Overlay Header */}
         <View style={{ width: '100%', alignItems: 'center', backgroundColor: 'yellow', borderColor: 'red', borderWidth: '1px'}}>
-          <Text style={{ fontSize: 36, fontWeight: 150 }}>{SUPPORTED_LEAGUES[2790]}</Text>
+          <Text style={{ fontSize: 36, fontWeight: 150 }}>{leagueName}</Text>
         </View>
 
         {/* Overlay Body */}
