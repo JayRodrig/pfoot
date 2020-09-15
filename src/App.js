@@ -9,9 +9,8 @@ import ReactNativeElementsStyles from './ReactNativeElementsStyles';
 /*
   TODO:
 
-  * Create own TeamCell component to render on FlatList
-  * Render DONE button to move on to next league
-  * Make moving between leagues dynamic
+  * Create own TeamCell component to render on FlatList✅
+  * Make moving between leagues dynamic✅
   * Create state to store user picks
   * Add Firebase login
     * Add screen to log in

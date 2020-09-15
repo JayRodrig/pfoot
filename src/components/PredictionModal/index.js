@@ -45,7 +45,9 @@ const PredictionModal = ({ league, onBackDropPress, visible }) => {
                   title={team.name}
                 />
               ))
-            ) : null
+            ) : (
+              <Text>Loading state...</Text>
+            )
           }
         </View>
 

@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import PredictionModal from '../PredictionModal';
 
@@ -21,7 +20,6 @@ const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
 
 const Home = () => {
   const [league, setLeague] = useState(undefined);
-  const [predictions, setPredictions] = useState(undefined);
   const [visible, setVisible] = useState(false);
 
   const supportedLeagues = Object.keys(SUPPORTED_LEAGUES);
@@ -30,8 +28,8 @@ const Home = () => {
     setVisible(!visible);
   };
 
-  const handlePredictionButtonPress = (league) => () => {
-    setLeague(league);
+  const handlePredictionButtonPress = ({ leagueID, leagueName }) => () => {
+    setLeague({ leagueID, leagueName });
     toggleOverlay();
   }
 
@@ -40,18 +38,6 @@ const Home = () => {
         <View style={styles.emptyStateTitleContainer}>
           <Text style={{ fontSize: 24, fontWeight: 400 }}>Start by making some predictions:</Text>
         </View>
-        {/* <Button
-          icon={
-            <Icon
-              name="arrow-right"
-              size={15}
-              color="white"
-            />
-          }
-          iconRight
-          title="Start predicting"
-          onPress={toggleOverlay}
-        /> */}
         <View style={styles.predictionButtonContainer}>
           {
             supportedLeagues.map((leagueName, index) => (
