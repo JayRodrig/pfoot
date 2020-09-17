@@ -1,11 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { CheckBox } from 'react-native-elements';
 
-const TeamCell = ({ icon, title }) => {
+const TeamCell = ({ disabled, icon, setPrediction, title, visible }) => {
   const [checked, setChecked] = useState(false);
 
-  const handleOnPress = () => setChecked(!checked);
+  useEffect(() => {
+    setChecked(false);
+  }, [visible])
+
+  const handleOnPress = () => {
+    if (disabled && !checked) return;
+    setChecked(!checked);
+    checked ? setPrediction() : setPrediction({ title })
+  };
 
   return(
     <CheckBox

@@ -10,9 +10,13 @@ import apiClient from '../../api';
 import { SUPPORTED_LEAGUES } from '../../constants';
 
 const PredictionModal = ({ league, onBackDropPress, visible }) => {
+  const [prediction, setPrediction] = useState(undefined);
   const [teams, setTeams] = useState([]);
   const { leagueID, leagueName } = league || {};
 
+  useEffect(() => {
+    setPrediction()
+  }, [visible])
 
   useEffect(() => {
     if (league) {
@@ -43,6 +47,9 @@ const PredictionModal = ({ league, onBackDropPress, visible }) => {
                   key={index}
                   avatarUrl={team.avatarUrl}
                   title={team.name}
+                  disabled={!!prediction}
+                  setPrediction={setPrediction}
+                  visible={visible}
                 />
               ))
             ) : (
@@ -53,7 +60,7 @@ const PredictionModal = ({ league, onBackDropPress, visible }) => {
 
         {/* Overlay Footer */}
         <View>
-          <Button title="Next" />
+          <Button title="Save" disabled={!prediction} />
         </View>
       </View>
     </Overlay>
