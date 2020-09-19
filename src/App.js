@@ -3,9 +3,9 @@ import { Route } from 'react-router-dom';
 
 import { Header } from 'react-native-elements'
 
-import Home from './components/Home';
-import LoginScreen from './components/LogIn';
-import SignUpScreen from './components/Signup';
+import Home from './components/screens/Home';
+import LoginScreen from './components/screens/LogIn';
+import SignUpScreen from './components/screens/Signup';
 import ReactNativeElementsStyles from './ReactNativeElementsStyles';
 
 /*

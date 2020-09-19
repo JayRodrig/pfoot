@@ -1,30 +1,45 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
-import firebase from '../../firebase';
+import firebase from '../../../firebase';
+import { AuthContext } from '../../../store';
 
-const LoginScreen = ({ history }) => {
+// global variables
+const db = firebase.firestore();
+
+const SignUpScreen = ({ history }) => {
+  const [username, setUsername] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
+  const [, setAuthUser] = useContext(AuthContext);
 
+  const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleEmailAddressChange = (e) => setEmailAddress(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleOnPress = async (e) => {
     try {
-      const signUserIn = await firebase
+      const createFirebaseUser = await firebase
         .auth()
-        .signInWithEmailAndPassword(emailAddress, password);
-      const { user: { uid: userID, l: token } } = signUserIn;
+        .createUserWithEmailAndPassword(emailAddress, password);
+      const { l: token, uid: userID } = createFirebaseUser.user;
       const user = {
+        userID,
+        username,
         emailAddress,
         token,
-        userID
       };
 
-      history.push('/')
+      const addUserToDB = await db.collection("users").add(user);
+
+      setAuthUser({
+        user,
+        loggedIn: true,
+      });
+
+      history.push('/');
     } catch (err) {
       throw new Error(err);
     };
@@ -33,14 +48,21 @@ const LoginScreen = ({ history }) => {
   return(
     <View style={styles.inputContainer}>
       <Input
-        label="Your Email Address"
+        label="Your username"
+        placeholder='username'
+        leftIcon={{ type: 'font-awesome', name: 'at' }}
+        onChange={handleUsernameChange}
+        value={username}
+      />
+      <Input
+        label="Your email address"
         placeholder='email@address.com'
         leftIcon={{ type: 'font-awesome', name: 'envelope' }}
         onChange={handleEmailAddressChange}
         value={emailAddress}
       />
       <Input
-        label="Your Password"
+        label="Your password"
         placeholder='Password'
         leftIcon={{ type: 'font-awesome', name: 'lock' }}
         secureTextEntry
@@ -50,7 +72,7 @@ const LoginScreen = ({ history }) => {
       />
       <Button
         containerStyle={styles.button}
-        title="Log in"
+        title="Sign up"
         onPress={handleOnPress}
       />
     </View>
@@ -70,4 +92,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default SignUpScreen;

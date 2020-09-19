@@ -1,36 +1,37 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
-import firebase from '../../firebase';
+import firebase from '../../../firebase';
+import { AuthContext } from '../../../store';
 
-// global variables
-const db = firebase.firestore();
-
-const SignUpScreen = () => {
-  const [username, setUsername] = useState('');
+const LoginScreen = ({ history }) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
+  const [, setAuthUser] = useContext(AuthContext);
 
-  const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleEmailAddressChange = (e) => setEmailAddress(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   const handleOnPress = async (e) => {
     try {
-      const createFirebaseUser = await firebase
+      const signUserIn = await firebase
         .auth()
-        .createUserWithEmailAndPassword(emailAddress, password);
-      const { l: token, uid: userID } = createFirebaseUser.user;
+        .signInWithEmailAndPassword(emailAddress, password);
+      const { user: { uid: userID, l: token } } = signUserIn;
       const user = {
-        userID,
-        username,
         emailAddress,
         token,
+        userID
       };
 
-      const addUserToDB = await db.collection("users").add(user);
+      setAuthUser({
+        user,
+        loggedIn: true,
+      });
+
+      history.push('/');
     } catch (err) {
       throw new Error(err);
     };
@@ -39,21 +40,14 @@ const SignUpScreen = () => {
   return(
     <View style={styles.inputContainer}>
       <Input
-        label="Your username"
-        placeholder='username'
-        leftIcon={{ type: 'font-awesome', name: 'at' }}
-        onChange={handleUsernameChange}
-        value={username}
-      />
-      <Input
-        label="Your email address"
+        label="Your Email Address"
         placeholder='email@address.com'
         leftIcon={{ type: 'font-awesome', name: 'envelope' }}
         onChange={handleEmailAddressChange}
         value={emailAddress}
       />
       <Input
-        label="Your password"
+        label="Your Password"
         placeholder='Password'
         leftIcon={{ type: 'font-awesome', name: 'lock' }}
         secureTextEntry
@@ -63,7 +57,7 @@ const SignUpScreen = () => {
       />
       <Button
         containerStyle={styles.button}
-        title="Sign up"
+        title="Log in"
         onPress={handleOnPress}
       />
     </View>
@@ -83,4 +77,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignUpScreen;
+export default LoginScreen;
