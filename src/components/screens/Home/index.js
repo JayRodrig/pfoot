@@ -1,11 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
-import PredictionModal from '../PredictionModal';
+import PredictionModal from '../../PredictionModal';
+import { AuthContext } from '../../../store';
 
-import { SUPPORTED_LEAGUES } from '../../constants';
+import { SUPPORTED_LEAGUES } from '../../../constants';
 
 const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
   const formattedLeagueName = leagueName.split('_').join(' ');
@@ -21,6 +22,7 @@ const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
 const Home = () => {
   const [league, setLeague] = useState(undefined);
   const [visible, setVisible] = useState(false);
+  const [authUser,] = useContext(AuthContext);
 
   const supportedLeagues = Object.keys(SUPPORTED_LEAGUES);
 
