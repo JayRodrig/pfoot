@@ -30,9 +30,11 @@ const SignUpScreen = ({ history }) => {
         username,
         emailAddress,
         token,
+        predictions: {},
       };
 
-      const addUserToDB = await db.collection("users").add(user);
+      const dbDocRef = db.collection("users").doc(userID);
+      await dbDocRef.set(user);
 
       setAuthUser({
         user,

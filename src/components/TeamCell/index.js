@@ -12,7 +12,7 @@ const TeamCell = ({ disabled, icon, setPrediction, title, visible }) => {
   const handleOnPress = () => {
     if (disabled && !checked) return;
     setChecked(!checked);
-    checked ? setPrediction() : setPrediction({ title })
+    checked ? setPrediction() : setPrediction({ team: title })
   };
 
   return(

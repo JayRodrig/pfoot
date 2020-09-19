@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
@@ -6,6 +6,7 @@ import { Button } from 'react-native-elements';
 import PredictionModal from '../../PredictionModal';
 import { SUPPORTED_LEAGUES } from '../../../constants';
 import { AuthContext } from '../../../store';
+import apiClient from '../../../api';
 
 const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
   const formattedLeagueName = leagueName.split('_').join(' ');
@@ -21,9 +22,19 @@ const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
 const Home = ({ history }) => {
   const [league, setLeague] = useState(undefined);
   const [visible, setVisible] = useState(false);
+  const [userPredictions, setUserPredictions] = useState(undefined);
   const [authUser,] = useContext(AuthContext);
 
   const supportedLeagues = Object.keys(SUPPORTED_LEAGUES);
+
+  useEffect(() => {
+    if (authUser) {
+      apiClient.getUserPredictions(authUser)
+        .then((predictions) => setUserPredictions(predictions));
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authUser])
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -52,7 +63,13 @@ const Home = ({ history }) => {
           ))
         }
       </View>
-      <PredictionModal league={league} onBackDropPress={toggleOverlay} visible={visible} />
+      <PredictionModal
+        league={league}
+        onBackDropPress={toggleOverlay}
+        visible={visible}
+        userPredictions={userPredictions}
+        setUserPredictions={setUserPredictions}
+      />
     </View>
   ) : (
     <Redirect to='/landing' />

@@ -1,3 +1,8 @@
+import firebase from '../firebase';
+
+// global variables
+const db = firebase.firestore();
+
 export default {
   getTeamsByLeagueId: async (leagueID) => {
     try {
@@ -19,4 +24,40 @@ export default {
       return new Error(err);
     }
   },
-}
+
+  getUserData: async (authUser) => {
+    const { user } = authUser
+    try {
+      const snapshot = await db.collection('users').get();
+      let userData;
+
+      snapshot.forEach((doc) => {
+        if (doc.data().userID === user.userID) {
+          userData = doc.data();
+        };
+      });
+
+      return userData;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
+  getUserPredictions: async (authUser) => {
+    const { user } = authUser || {};
+    try {
+      const snapshot = await db.collection('users').get();
+      let userData;
+
+      snapshot.forEach((doc) => {
+        if (doc.data().userID === user.userID) {
+          userData = doc.data();
+        };
+      });
+
+      return userData.predictions;
+    } catch (err) {
+      console.log(err);
+    }
+  },
+};
