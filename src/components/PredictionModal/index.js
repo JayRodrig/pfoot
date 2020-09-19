@@ -1,16 +1,27 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useContext, useState, useEffect } from 'react';
 import { Text, View } from 'react-native';
 import { Button, Overlay } from 'react-native-elements';
 import Modal from 'modal-react-native-web'
 
 import TeamCell from '../TeamCell';
-
 import apiClient from '../../api';
+import firebase from '../../firebase';
+import { AuthContext } from '../../store'
 
-const PredictionModal = ({ league, onBackDropPress, visible }) => {
+// global variables
+const db = firebase.firestore();
+
+const PredictionModal = ({
+  league,
+  onBackDropPress,
+  userPredictions,
+  setUserPredictions,
+  visible
+}) => {
+  // refactor this to be selectedTeam: string
   const [prediction, setPrediction] = useState(undefined);
   const [teams, setTeams] = useState([]);
+  const [authUser,] = useContext(AuthContext);
   const { leagueID, leagueName } = league || {};
 
   useEffect(() => {
@@ -27,6 +38,32 @@ const PredictionModal = ({ league, onBackDropPress, visible }) => {
       fetchData();
     }
   }, [league, leagueID]);
+
+  const handleOnSavePrediction = async (e) => {
+    const { user: { userID } } = authUser;
+    const userData = await apiClient.getUserData(authUser);
+    if (userData) {
+      const { team } = prediction || {};
+      const userWithUpdatedPredictions = {
+        ...userData,
+        predictions: {
+          ...userData.predictions,
+          [leagueName]: team,
+        },
+      };
+
+      setUserPredictions({
+        ...userPredictions,
+        [leagueName]: team,
+      });
+
+      const dbDocRef = db.collection("users").doc(userID);
+      await dbDocRef.set(userWithUpdatedPredictions);
+
+      setPrediction();
+      onBackDropPress();
+    };
+  };
 
   return(
     <Overlay isVisible={visible} ModalComponent={Modal} onBackdropPress={onBackDropPress} overlayStyle={{ padding: 0 }}>
@@ -59,7 +96,7 @@ const PredictionModal = ({ league, onBackDropPress, visible }) => {
 
         {/* Overlay Footer */}
         <View>
-          <Button title="Save" disabled={!prediction} />
+          <Button title="Save" disabled={!prediction} onPress={handleOnSavePrediction} />
         </View>
       </View>
     </Overlay>

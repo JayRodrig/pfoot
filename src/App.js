@@ -21,9 +21,10 @@ import ReactNativeElementsStyles from './ReactNativeElementsStyles';
   * Deploy
   * Add tests
   * Flow type
-  * Start adding features!
-  *
-  *
+  * Create user profiles
+  * Allow users to add friends
+  * Create competition feature for groups, whoever gets more predictions right wins
+  * Keep adding features!
   *
   * PredictionOverlay state:
   * {
