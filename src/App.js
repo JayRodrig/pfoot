@@ -4,6 +4,7 @@ import { Route } from 'react-router-dom';
 import { Header } from 'react-native-elements'
 
 import Home from './components/Home';
+import LoginScreen from './components/LogIn';
 import ReactNativeElementsStyles from './ReactNativeElementsStyles';
 
 /*
@@ -46,6 +47,7 @@ function App() {
     <>
       <Header leftComponent={{ icon: 'menu', color: '#fff' }} centerComponent={{ text: 'Footy Predict' }} />
       <Route path='/' exact component={Home} />
+      <Route path='/login' exact component={LoginScreen} />
       <ReactNativeElementsStyles />
     </>
   );

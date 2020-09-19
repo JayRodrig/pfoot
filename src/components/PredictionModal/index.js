@@ -7,7 +7,6 @@ import Modal from 'modal-react-native-web'
 import TeamCell from '../TeamCell';
 
 import apiClient from '../../api';
-import { SUPPORTED_LEAGUES } from '../../constants';
 
 const PredictionModal = ({ league, onBackDropPress, visible }) => {
   const [prediction, setPrediction] = useState(undefined);
