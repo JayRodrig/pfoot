@@ -3,24 +3,33 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
-const LoginScreen = () => {
+const SignUpScreen = () => {
+  const [username, setUsername] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
 
+  const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleEmailAddressChange = (e) => setEmailAddress(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
 
   return(
     <View style={styles.inputContainer}>
       <Input
-        label="Your Email Address"
+        label="Your username"
+        placeholder='username'
+        leftIcon={{ type: 'font-awesome', name: 'at' }}
+        onChange={handleUsernameChange}
+        value={username}
+      />
+      <Input
+        label="Your email address"
         placeholder='email@address.com'
         leftIcon={{ type: 'font-awesome', name: 'envelope' }}
         onChange={handleEmailAddressChange}
         value={emailAddress}
       />
       <Input
-        label="Your Password"
+        label="Your password"
         placeholder='Password'
         leftIcon={{ type: 'font-awesome', name: 'lock' }}
         secureTextEntry
@@ -30,7 +39,7 @@ const LoginScreen = () => {
       />
       <Button
         containerStyle={styles.button}
-        title="Log in"
+        title="Sign up"
       />
     </View>
   );
@@ -49,4 +58,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default LoginScreen;
+export default SignUpScreen;
