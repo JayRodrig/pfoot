@@ -1,12 +1,11 @@
-import React, { useState, useContext, useEffect } from 'react';
-
+import React, { useState, useContext } from 'react';
+import { Redirect } from 'react-router-dom';
 import { StyleSheet, Text, View } from 'react-native';
 import { Button } from 'react-native-elements';
 
 import PredictionModal from '../../PredictionModal';
-import { AuthContext } from '../../../store';
-
 import { SUPPORTED_LEAGUES } from '../../../constants';
+import { AuthContext } from '../../../store';
 
 const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
   const formattedLeagueName = leagueName.split('_').join(' ');
@@ -19,7 +18,7 @@ const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
   );
 };
 
-const Home = () => {
+const Home = ({ history }) => {
   const [league, setLeague] = useState(undefined);
   const [visible, setVisible] = useState(false);
   const [authUser,] = useContext(AuthContext);
@@ -35,27 +34,29 @@ const Home = () => {
     toggleOverlay();
   }
 
-  return(
+  return authUser.user ? (
     <View style={styles.bodyContainer}>
-        <View style={styles.emptyStateTitleContainer}>
-          <Text style={{ fontSize: 24, fontWeight: 400 }}>Start by making some predictions:</Text>
-        </View>
-        <View style={styles.predictionButtonContainer}>
-          {
-            supportedLeagues.map((leagueName, index) => (
-              <PredictionButton
-                key={index}
-                leagueID={SUPPORTED_LEAGUES[leagueName]}
-                leagueName={leagueName}
-                onPress={handlePredictionButtonPress}
-                styles={styles.predictionButton}
-              />
-            ))
-          }
-        </View>
-        <PredictionModal league={league} onBackDropPress={toggleOverlay} visible={visible} />
+      <View style={styles.emptyStateTitleContainer}>
+        <Text style={{ fontSize: 24, fontWeight: 400 }}>Start by making some predictions:</Text>
       </View>
-  );
+      <View style={styles.predictionButtonContainer}>
+        {
+          supportedLeagues.map((leagueName, index) => (
+            <PredictionButton
+              key={index}
+              leagueID={SUPPORTED_LEAGUES[leagueName]}
+              leagueName={leagueName}
+              onPress={handlePredictionButtonPress}
+              styles={styles.predictionButton}
+            />
+          ))
+        }
+      </View>
+      <PredictionModal league={league} onBackDropPress={toggleOverlay} visible={visible} />
+    </View>
+  ) : (
+    <Redirect to='/landing' />
+  )
 };
 
 const styles = StyleSheet.create({
