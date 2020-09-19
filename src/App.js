@@ -5,6 +5,7 @@ import { Header } from 'react-native-elements'
 
 import Home from './components/Home';
 import LoginScreen from './components/LogIn';
+import SignUpScreen from './components/Signup';
 import ReactNativeElementsStyles from './ReactNativeElementsStyles';
 
 /*
@@ -48,6 +49,7 @@ function App() {
       <Header leftComponent={{ icon: 'menu', color: '#fff' }} centerComponent={{ text: 'Footy Predict' }} />
       <Route path='/' exact component={Home} />
       <Route path='/login' exact component={LoginScreen} />
+      <Route path='/signup' exact component={SignUpScreen} />
       <ReactNativeElementsStyles />
     </>
   );
