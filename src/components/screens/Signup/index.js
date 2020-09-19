@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-
+import { Redirect } from 'react-router-dom';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
@@ -13,7 +13,7 @@ const SignUpScreen = ({ history }) => {
   const [username, setUsername] = useState('');
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
-  const [, setAuthUser] = useContext(AuthContext);
+  const [authUser, setAuthUser] = useContext(AuthContext);
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
   const handleEmailAddressChange = (e) => setEmailAddress(e.target.value);
@@ -45,7 +45,9 @@ const SignUpScreen = ({ history }) => {
     };
   };
 
-  return(
+  return authUser.user ? (
+    <Redirect to='/' />
+  ) : (
     <View style={styles.inputContainer}>
       <Input
         label="Your username"

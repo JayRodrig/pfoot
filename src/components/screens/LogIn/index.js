@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-
+import { Redirect } from 'react-router-dom';
 import { StyleSheet, View } from 'react-native';
 import { Button, Input } from 'react-native-elements';
 
@@ -9,7 +9,7 @@ import { AuthContext } from '../../../store';
 const LoginScreen = ({ history }) => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
-  const [, setAuthUser] = useContext(AuthContext);
+  const [authUser, setAuthUser] = useContext(AuthContext);
 
   const handleEmailAddressChange = (e) => setEmailAddress(e.target.value);
   const handlePasswordChange = (e) => setPassword(e.target.value);
@@ -37,7 +37,9 @@ const LoginScreen = ({ history }) => {
     };
   };
 
-  return(
+  return authUser.user ? (
+    <Redirect to='/' />
+  ) : (
     <View style={styles.inputContainer}>
       <Input
         label="Your Email Address"

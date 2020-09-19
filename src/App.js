@@ -4,23 +4,14 @@ import { Route } from 'react-router-dom';
 import { Header } from 'react-native-elements'
 
 import Home from './components/screens/Home';
-import LoginScreen from './components/screens/LogIn';
+import LandingScreen from './components/screens/Landing';
+import LoginScreen from './components/screens/Login';
 import SignUpScreen from './components/screens/Signup';
 import ReactNativeElementsStyles from './ReactNativeElementsStyles';
 
 /*
   TODO:
 
-  * Create own TeamCell component to render on FlatList✅
-  * Make moving between leagues dynamic✅
-  * Create state to store user picks
-  * Add Firebase login
-    * Add screen to log in
-    * Add screen to sign up
-    * Add a log out option to the hamburger icon in Header
-    * Create a landing screen
-    * Save user log in with React context
-    * Add support for React context on existing screens
   * Now with user id, start storing user picks
     * Implement Firebase database
     * Add functions to store and delete data
@@ -48,6 +39,7 @@ function App() {
     <>
       <Header leftComponent={{ icon: 'menu', color: '#fff' }} centerComponent={{ text: 'Footy Predict' }} />
       <Route path='/' exact component={Home} />
+      <Route path='/landing' exact component={LandingScreen} />
       <Route path='/login' exact component={LoginScreen} />
       <Route path='/signup' exact component={SignUpScreen} />
       <ReactNativeElementsStyles />
