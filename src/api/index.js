@@ -14,11 +14,15 @@ export default {
         }
       });
       const { api: { teams } } = await teamsCall.json();
-
+      console.log('teams: ', teams)
       return teams.map((team) => ({
+        teamID: team.team_id,
         avatarUrl: team.logo,
         name: team.name,
-        subtitle: team.venue_name
+        venueName: team.venue_name,
+        venueCapacity: team.venue_capacity,
+        founded: team.founded,
+        teamCountry: team.country
       }));
     } catch (err) {
       return new Error(err);

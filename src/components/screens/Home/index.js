@@ -1,27 +1,18 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button } from 'react-native-elements';
 
 import PredictionModal from '../../PredictionModal';
+import PredictionButton from '../../PredictionButton';
+import PredictionSheet from '../../PredictionSheet'
 import { SUPPORTED_LEAGUES } from '../../../constants';
 import { AuthContext } from '../../../store';
 import apiClient from '../../../api';
 
-const PredictionButton = ({ leagueID, leagueName, onPress, styles }) => {
-  const formattedLeagueName = leagueName.split('_').join(' ');
-  return(
-    <Button
-      title={formattedLeagueName}
-      containerStyle={styles}
-      onPress={onPress({ leagueID, leagueName })}
-    />
-  );
-};
-
 const Home = ({ history }) => {
   const [league, setLeague] = useState(undefined);
-  const [visible, setVisible] = useState(false);
+  const [isOverlayVisible, setIsOverlayVisible] = useState(false);
+  const [isPredictionSheetVisible, setIsPredictionSheetVisible] = useState(false);
   const [userPredictions, setUserPredictions] = useState(undefined);
   const [authUser,] = useContext(AuthContext);
 
@@ -32,17 +23,22 @@ const Home = ({ history }) => {
       apiClient.getUserPredictions(authUser)
         .then((predictions) => setUserPredictions(predictions));
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authUser])
 
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
+  const toggleOverlay = () => setIsOverlayVisible(!isOverlayVisible);
+  const togglePredictionSheet = () => setIsPredictionSheetVisible(!isPredictionSheetVisible);
 
   const handlePredictionButtonPress = ({ leagueID, leagueName }) => () => {
+    const canMakePrediction = userPredictions && !userPredictions[leagueName];
+
     setLeague({ leagueID, leagueName });
-    toggleOverlay();
+
+    if (canMakePrediction) {
+      isPredictionSheetVisible && setIsPredictionSheetVisible(!isPredictionSheetVisible);
+      toggleOverlay();
+    } else if (!canMakePrediction) {
+      togglePredictionSheet();
+    }
   }
 
   return authUser.user ? (
@@ -59,6 +55,7 @@ const Home = ({ history }) => {
               leagueName={leagueName}
               onPress={handlePredictionButtonPress}
               styles={styles.predictionButton}
+              userPredictions={userPredictions}
             />
           ))
         }
@@ -66,9 +63,14 @@ const Home = ({ history }) => {
       <PredictionModal
         league={league}
         onBackDropPress={toggleOverlay}
-        visible={visible}
+        visible={isOverlayVisible}
         userPredictions={userPredictions}
         setUserPredictions={setUserPredictions}
+      />
+      <PredictionSheet
+        visible={isPredictionSheetVisible}
+        setIsPredictionSheetVisible={setIsPredictionSheetVisible}
+        team={league && userPredictions[league.leagueName]}
       />
     </View>
   ) : (
@@ -79,7 +81,8 @@ const Home = ({ history }) => {
 const styles = StyleSheet.create({
   bodyContainer: {
     height: 'calc(100vh - 44px)',
-    backgroundColor: 'yellow',
+    width: '100vw'
+    // backgroundColor: 'yellow',
     // justifyContent: 'center',
     // alignItems: 'center'
   },
@@ -95,12 +98,23 @@ const styles = StyleSheet.create({
 
   predictionButton: {
     marginHorizontal: 25,
-    marginVertical: 10
+    marginTop: 10
   },
 
   predictionButtonContainer: {
     borderColor: 'red',
     borderWidth: 1,
+  },
+
+  userPredictionText: {
+    textAlign: 'center',
+    // marginHorizontal: 25,
+    // padding: 10,
+  },
+
+  userPredictionTextContainer: {
+    borderWidth: 1,
+    borderColor: 'green',
   }
 });
 
