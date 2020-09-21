@@ -86,6 +86,7 @@ const PredictionModal = ({
                   disabled={!!prediction}
                   setPrediction={setPrediction}
                   visible={visible}
+                  team={team}
                 />
               ))
             ) : (
