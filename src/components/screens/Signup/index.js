@@ -1,18 +1,18 @@
-import React, { useState, useContext } from 'react';
-import { Redirect } from 'react-router-dom';
-import { StyleSheet, View } from 'react-native';
-import { Button, Input } from 'react-native-elements';
+import React, { useState, useContext } from "react";
+import { Redirect } from "react-router-dom";
+import { StyleSheet, View } from "react-native";
+import { Button, Input } from "react-native-elements";
 
-import firebase from '../../../firebase';
-import { AuthContext } from '../../../store';
+import firebase from "../../../firebase";
+import { AuthContext } from "../../../store";
 
 // global variables
 const db = firebase.firestore();
 
 const SignUpScreen = ({ history }) => {
-  const [username, setUsername] = useState('');
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
+  const [username, setUsername] = useState("");
+  const [emailAddress, setEmailAddress] = useState("");
+  const [password, setPassword] = useState("");
   const [authUser, setAuthUser] = useContext(AuthContext);
 
   const handleUsernameChange = (e) => setUsername(e.target.value);
@@ -41,34 +41,34 @@ const SignUpScreen = ({ history }) => {
         loggedIn: true,
       });
 
-      history.push('/');
+      history.push("/");
     } catch (err) {
       throw new Error(err);
-    };
+    }
   };
 
   return authUser.user ? (
-    <Redirect to='/' />
+    <Redirect to="/" />
   ) : (
     <View style={styles.inputContainer}>
       <Input
         label="Your username"
-        placeholder='username'
-        leftIcon={{ type: 'font-awesome', name: 'at' }}
+        placeholder="username"
+        leftIcon={{ type: "font-awesome", name: "at" }}
         onChange={handleUsernameChange}
         value={username}
       />
       <Input
         label="Your email address"
-        placeholder='email@address.com'
-        leftIcon={{ type: 'font-awesome', name: 'envelope' }}
+        placeholder="email@address.com"
+        leftIcon={{ type: "font-awesome", name: "envelope" }}
         onChange={handleEmailAddressChange}
         value={emailAddress}
       />
       <Input
         label="Your password"
-        placeholder='Password'
-        leftIcon={{ type: 'font-awesome', name: 'lock' }}
+        placeholder="Password"
+        leftIcon={{ type: "font-awesome", name: "lock" }}
         secureTextEntry
         textContentType="password"
         onChange={handlePasswordChange}
@@ -85,15 +85,15 @@ const SignUpScreen = ({ history }) => {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    height: 'calc(100vh - 44px)',
-    backgroundColor: 'yellow',
-    justifyContent: 'center',
-    paddingHorizontal: '10vw'
+    height: "calc(100vh - 44px)",
+    // backgroundColor: 'yellow',
+    justifyContent: "center",
+    paddingHorizontal: "10vw",
   },
 
   button: {
-    marginVertical: '5vh'
-  }
+    marginVertical: "5vh",
+  },
 });
 
 export default SignUpScreen;
