@@ -11,35 +11,33 @@ const PredictionButton = ({
   hasPrediction,
 }) => {
   const formattedLeagueName = leagueName.split("_").join(" ");
+  const prediction = hasPrediction && userPredictions[leagueName].name;
   return (
-    <>
+    <View style={styles}>
       <Button
         title={formattedLeagueName}
-        containerStyle={styles}
         onPress={onPress({ leagueID, leagueName })}
       />
-      {hasPrediction ? (
-        <View
+      <View
+        style={{
+          borderWidth: 1,
+          borderColor: "black",
+          borderTopWidth: 0,
+          borderBottomLeftRadius: 5,
+          borderBottomRightRadius: 5,
+        }}
+      >
+        <Text
           style={{
-            borderWidth: 1,
-            borderColor: "black",
-            marginHorizontal: 25,
-            borderTopWidth: 0,
-            borderBottomLeftRadius: 5,
-            borderBottomRightRadius: 5,
+            textAlign: "center",
+            padding: 10,
+            fontWeight: hasPrediction ? 600 : 200,
           }}
         >
-          <Text
-            style={{
-              textAlign: "center",
-              padding: 10,
-            }}
-          >
-            {userPredictions[leagueName].name}
-          </Text>
-        </View>
-      ) : null}
-    </>
+          {hasPrediction ? prediction : "No prediction made yet"}
+        </Text>
+      </View>
+    </View>
   );
 };
 

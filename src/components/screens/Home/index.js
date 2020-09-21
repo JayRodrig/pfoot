@@ -72,10 +72,7 @@ const Home = ({ history }) => {
               leagueID={SUPPORTED_LEAGUES[leagueName]}
               leagueName={leagueName}
               onPress={handlePredictionButtonPress}
-              styles={[
-                styles.predictionButton,
-                hasPrediction && { marginBottom: 0 },
-              ]}
+              styles={styles.predictionButton}
               userPredictions={userPredictions}
               hasPrediction={hasPrediction}
             />

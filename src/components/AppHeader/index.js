@@ -1,5 +1,4 @@
 import React, { useContext } from "react";
-import { StyleSheet } from "react-native";
 import { Header } from "react-native-elements";
 
 import { AuthContext } from "../../store";
@@ -28,11 +27,11 @@ const AppHeader = () => {
     <Header
       leftComponent={
         user &&
-        loggedIn && { icon: "bars", color: "#fff", type: "font-awesome" }
+        loggedIn && { icon: "search", color: "#fff", type: "font-awesome" }
       }
       centerComponent={{
         text: "Sport Predict",
-        style: { fontSize: 32, fontWeight: 500 },
+        style: { fontSize: 32, fontWeight: 500, color: "#fff" },
       }}
       rightComponent={
         user &&
