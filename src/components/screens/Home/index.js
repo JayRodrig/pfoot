@@ -18,6 +18,8 @@ const Home = ({ history }) => {
   const [userPredictions, setUserPredictions] = useState(undefined);
   const [authUser] = useContext(AuthContext);
 
+  const hasMadePredictions =
+    userPredictions && !!Object.keys(userPredictions).length;
   const supportedLeagues = Object.keys(SUPPORTED_LEAGUES);
 
   useEffect(() => {
@@ -48,11 +50,19 @@ const Home = ({ history }) => {
 
   return authUser.user ? (
     <View style={styles.bodyContainer}>
-      <View style={styles.emptyStateTitleContainer}>
-        <Text style={{ fontSize: 24, fontWeight: 400 }}>
-          Start by making some predictions:
-        </Text>
-      </View>
+      {hasMadePredictions ? (
+        <View style={styles.emptyStateTitleContainer}>
+          <Text style={{ fontSize: 24, fontWeight: 400 }}>
+            Your predictions:
+          </Text>
+        </View>
+      ) : (
+        <View style={styles.emptyStateTitleContainer}>
+          <Text style={{ fontSize: 24, fontWeight: 400 }}>
+            Start by making some predictions...
+          </Text>
+        </View>
+      )}
       <View style={styles.predictionButtonContainer}>
         {supportedLeagues.map((leagueName, index) => {
           const hasPrediction = userPredictions && userPredictions[leagueName];
@@ -92,7 +102,7 @@ const Home = ({ history }) => {
 
 const styles = StyleSheet.create({
   bodyContainer: {
-    height: "calc(100vh - 44px)",
+    height: "calc(100vh - 64px)",
     width: "100vw",
     // justifyContent: 'center',
     // alignItems: 'center'
