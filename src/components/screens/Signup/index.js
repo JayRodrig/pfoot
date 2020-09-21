@@ -85,7 +85,7 @@ const SignUpScreen = ({ history }) => {
 
 const styles = StyleSheet.create({
   inputContainer: {
-    height: "calc(100vh - 44px)",
+    height: "calc(100vh - 64px)",
     // backgroundColor: 'yellow',
     justifyContent: "center",
     paddingHorizontal: "10vw",

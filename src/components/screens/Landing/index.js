@@ -24,7 +24,7 @@ const LandingScreen = ({ history }) => {
 
 const styles = StyleSheet.create({
   buttonContainer: {
-    height: "calc(100vh - 44px)",
+    height: "calc(100vh - 64px)",
     // backgroundColor: 'yellow',
     justifyContent: "center",
     paddingHorizontal: "10vw",
